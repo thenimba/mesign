@@ -13,7 +13,7 @@ export interface SignatureColors {
   text: string;
 }
 
-export type FontFamily = 'Inter' | 'Rubik' | 'Heebo' | 'Arimo';
+export type FontFamily = 'Inter' | 'Rubik' | 'Heebo' | 'Arimo' | 'Noto Sans Hebrew';
 export type Direction = 'ltr' | 'rtl';
 export type TemplateLayout = 'classic' | 'stacked';
 
