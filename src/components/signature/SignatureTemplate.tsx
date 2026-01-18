@@ -11,6 +11,7 @@ const getFontUrl = (font: string) => {
     Rubik: "https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap",
     Heebo: "https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&display=swap",
     Arimo: "https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600&display=swap",
+    "Noto Sans Hebrew": "https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;500;600&display=swap",
   };
   return fonts[font] || fonts.Inter;
 };
@@ -44,12 +45,6 @@ const ClassicTemplate = ({ data }: SignatureTemplateProps) => {
 
   const activeSocials = Object.entries(socials).filter(([_, url]) => url && url.trim() !== "");
 
-  // Calculate content height for separator - base is around 60px for minimal content
-  const hasContactInfo = data.email || data.phone;
-  const hasAddress = Boolean(data.address);
-  const hasSocials = activeSocials.length > 0;
-  const contentHeight = 44 + (hasContactInfo ? 20 : 0) + (hasAddress ? 20 : 0) + (hasSocials ? 28 : 0);
-
   return (
     <table
       cellPadding="0"
@@ -67,18 +62,18 @@ const ClassicTemplate = ({ data }: SignatureTemplateProps) => {
           {data.logoUrl && (
             <td
               style={{
-                verticalAlign: "middle",
-                paddingRight: isRTL ? "0" : "16px",
-                paddingLeft: isRTL ? "16px" : "0",
+                verticalAlign: "top",
+                paddingRight: isRTL ? "0" : "14px",
+                paddingLeft: isRTL ? "14px" : "0",
               }}
             >
               <img
                 src={data.logoUrl}
                 alt={data.fullName}
-                width="72"
-                height="72"
+                width="80"
+                height="80"
                 style={{
-                  borderRadius: "10px",
+                  borderRadius: "8px",
                   objectFit: "cover",
                   display: "block",
                 }}
@@ -86,21 +81,22 @@ const ClassicTemplate = ({ data }: SignatureTemplateProps) => {
             </td>
           )}
 
-          {/* Separator - matches content height dynamically */}
+          {/* Separator - stretches full height of text content */}
           {data.logoUrl && (
             <td
               style={{
-                paddingRight: isRTL ? "0" : "16px",
-                paddingLeft: isRTL ? "16px" : "0",
-                verticalAlign: "middle",
+                paddingRight: isRTL ? "0" : "14px",
+                paddingLeft: isRTL ? "14px" : "0",
+                verticalAlign: "stretch",
               }}
             >
               <div
                 style={{
-                  width: "1px",
-                  height: `${contentHeight}px`,
-                  backgroundColor: colors.secondary,
-                  opacity: 0.3,
+                  width: "2px",
+                  height: "100%",
+                  minHeight: "80px",
+                  backgroundColor: colors.primary,
+                  opacity: 0.6,
                 }}
               />
             </td>
@@ -293,21 +289,22 @@ const StackedTemplate = ({ data }: SignatureTemplateProps) => {
             </td>
           )}
 
-          {/* Separator */}
+          {/* Separator - stretches full height of text content */}
           {data.logoUrl && (
             <td
               style={{
-                paddingRight: isRTL ? "0" : "18px",
-                paddingLeft: isRTL ? "18px" : "0",
-                verticalAlign: "middle",
+                paddingRight: isRTL ? "0" : "14px",
+                paddingLeft: isRTL ? "14px" : "0",
+                verticalAlign: "stretch",
               }}
             >
               <div
                 style={{
-                  width: "1px",
-                  height: "100px",
-                  backgroundColor: colors.secondary,
-                  opacity: 0.25,
+                  width: "2px",
+                  height: "100%",
+                  minHeight: "90px",
+                  backgroundColor: colors.primary,
+                  opacity: 0.6,
                 }}
               />
             </td>

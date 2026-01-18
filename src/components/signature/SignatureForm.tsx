@@ -275,55 +275,73 @@ export const SignatureForm = ({ data, onChange }: SignatureFormProps) => {
                     <Palette className="w-4 h-4" />
                     Colors
                   </h3>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-3 gap-3">
+                    {/* Primary Color */}
                     <div className="space-y-2">
-                      <Label className="text-xs">Primary</Label>
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="color"
-                          value={data.colors.primary}
-                          onChange={(e) => updateColor("primary", e.target.value)}
-                          className="w-10 h-10 rounded-lg border border-border cursor-pointer bg-transparent"
-                        />
+                      <Label className="text-xs text-muted-foreground">Primary</Label>
+                      <div className="relative group">
+                        <div 
+                          className="w-full h-12 rounded-lg border border-border cursor-pointer transition-all hover:border-primary/50 overflow-hidden"
+                          style={{ backgroundColor: data.colors.primary }}
+                        >
+                          <input
+                            type="color"
+                            value={data.colors.primary}
+                            onChange={(e) => updateColor("primary", e.target.value)}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          />
+                        </div>
                         <input
                           type="text"
                           value={data.colors.primary}
                           onChange={(e) => updateColor("primary", e.target.value)}
-                          className="flex-1 h-10 px-3 text-xs rounded-lg border border-input bg-secondary/50"
+                          className="mt-2 w-full h-8 px-2 text-xs rounded-md border border-input bg-secondary/50 text-center font-mono"
                         />
                       </div>
                     </div>
+                    {/* Secondary Color */}
                     <div className="space-y-2">
-                      <Label className="text-xs">Secondary</Label>
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="color"
-                          value={data.colors.secondary}
-                          onChange={(e) => updateColor("secondary", e.target.value)}
-                          className="w-10 h-10 rounded-lg border border-border cursor-pointer bg-transparent"
-                        />
+                      <Label className="text-xs text-muted-foreground">Secondary</Label>
+                      <div className="relative group">
+                        <div 
+                          className="w-full h-12 rounded-lg border border-border cursor-pointer transition-all hover:border-primary/50 overflow-hidden"
+                          style={{ backgroundColor: data.colors.secondary }}
+                        >
+                          <input
+                            type="color"
+                            value={data.colors.secondary}
+                            onChange={(e) => updateColor("secondary", e.target.value)}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          />
+                        </div>
                         <input
                           type="text"
                           value={data.colors.secondary}
                           onChange={(e) => updateColor("secondary", e.target.value)}
-                          className="flex-1 h-10 px-3 text-xs rounded-lg border border-input bg-secondary/50"
+                          className="mt-2 w-full h-8 px-2 text-xs rounded-md border border-input bg-secondary/50 text-center font-mono"
                         />
                       </div>
                     </div>
+                    {/* Text Color */}
                     <div className="space-y-2">
-                      <Label className="text-xs">Text</Label>
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="color"
-                          value={data.colors.text}
-                          onChange={(e) => updateColor("text", e.target.value)}
-                          className="w-10 h-10 rounded-lg border border-border cursor-pointer bg-transparent"
-                        />
+                      <Label className="text-xs text-muted-foreground">Text</Label>
+                      <div className="relative group">
+                        <div 
+                          className="w-full h-12 rounded-lg border border-border cursor-pointer transition-all hover:border-primary/50 overflow-hidden"
+                          style={{ backgroundColor: data.colors.text }}
+                        >
+                          <input
+                            type="color"
+                            value={data.colors.text}
+                            onChange={(e) => updateColor("text", e.target.value)}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          />
+                        </div>
                         <input
                           type="text"
                           value={data.colors.text}
                           onChange={(e) => updateColor("text", e.target.value)}
-                          className="flex-1 h-10 px-3 text-xs rounded-lg border border-input bg-secondary/50"
+                          className="mt-2 w-full h-8 px-2 text-xs rounded-md border border-input bg-secondary/50 text-center font-mono"
                         />
                       </div>
                     </div>
@@ -348,6 +366,7 @@ export const SignatureForm = ({ data, onChange }: SignatureFormProps) => {
                       <SelectItem value="Rubik">Rubik</SelectItem>
                       <SelectItem value="Heebo">Heebo</SelectItem>
                       <SelectItem value="Arimo">Arimo</SelectItem>
+                      <SelectItem value="Noto Sans Hebrew">Noto Sans Hebrew</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
