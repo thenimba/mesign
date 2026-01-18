@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SignatureData, FontFamily, Direction } from "@/types/signature";
 import { FloatingInput } from "@/components/ui/floating-input";
+import { FileUpload } from "@/components/ui/file-upload";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -19,7 +20,7 @@ import {
   Mail,
   Phone,
   MapPin,
-  Image,
+  ImageIcon,
   Linkedin,
   Twitter,
   Instagram,
@@ -141,12 +142,11 @@ export const SignatureForm = ({ data, onChange }: SignatureFormProps) => {
                   value={data.address}
                   onChange={(e) => updateField("address", e.target.value)}
                 />
-                <FloatingInput
-                  label="Logo/Avatar URL"
-                  icon={<Image className="w-4 h-4" />}
+                <FileUpload
+                  label="Logo / Avatar"
+                  icon={<ImageIcon className="w-4 h-4" />}
                   value={data.logoUrl}
-                  onChange={(e) => updateField("logoUrl", e.target.value)}
-                  placeholder="https://..."
+                  onChange={(value) => updateField("logoUrl", value)}
                 />
               </motion.div>
             </TabsContent>

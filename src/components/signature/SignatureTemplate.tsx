@@ -16,7 +16,7 @@ const getFontUrl = (font: string) => {
 };
 
 const getSocialIcon = (platform: string, color: string) => {
-  const iconStyle = { width: 18, height: 18, color };
+  const iconStyle = { width: 20, height: 20, color };
   switch (platform) {
     case "linkedin":
       return <Linkedin style={iconStyle} />;
@@ -40,7 +40,8 @@ export const SignatureTemplate = ({ data }: SignatureTemplateProps) => {
   const isRTL = direction === "rtl";
   const textAlign = isRTL ? "right" : "left";
   const marginDir = isRTL ? { marginLeft: "8px" } : { marginRight: "8px" };
-  const socialMarginDir = isRTL ? { marginRight: "12px" } : { marginLeft: "12px" };
+  // Increased spacing between social icons
+  const socialMarginDir = isRTL ? { marginRight: "16px" } : { marginLeft: "16px" };
 
   const activeSocials = Object.entries(socials).filter(([_, url]) => url && url.trim() !== "");
 
@@ -197,20 +198,26 @@ export const SignatureTemplate = ({ data }: SignatureTemplateProps) => {
                   {/* Social Links */}
                   {activeSocials.length > 0 && (
                     <tr>
-                      <td>
+                      <td style={{ paddingTop: "4px" }}>
                         <table cellPadding="0" cellSpacing="0">
                           <tbody>
                             <tr>
                               {activeSocials.map(([platform, url], index) => (
                                 <td
                                   key={platform}
-                                  style={index > 0 ? socialMarginDir : undefined}
+                                  style={{
+                                    paddingLeft: !isRTL && index > 0 ? "12px" : undefined,
+                                    paddingRight: isRTL && index > 0 ? "12px" : undefined,
+                                  }}
                                 >
                                   <a
                                     href={url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    style={{ textDecoration: "none" }}
+                                    style={{ 
+                                      textDecoration: "none",
+                                      display: "inline-block",
+                                    }}
                                   >
                                     {getSocialIcon(platform, colors.primary)}
                                   </a>
