@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SignatureData, FontFamily, Direction } from "@/types/signature";
+import { SignatureData, FontFamily, Direction, TemplateLayout } from "@/types/signature";
 import { FloatingInput } from "@/components/ui/floating-input";
 import { FileUpload } from "@/components/ui/file-upload";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,7 +30,7 @@ import {
   Palette,
   Type,
   AlignLeft,
-  AlignRight,
+  LayoutTemplate,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -210,6 +210,65 @@ export const SignatureForm = ({ data, onChange }: SignatureFormProps) => {
                 exit="exit"
                 transition={{ duration: 0.2 }}
               >
+                {/* Template Layout */}
+                <div className="space-y-3">
+                  <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                    <LayoutTemplate className="w-4 h-4" />
+                    Template Layout
+                  </Label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => updateField("template", "classic" as TemplateLayout)}
+                      className={cn(
+                        "relative p-4 rounded-xl border-2 transition-all text-left",
+                        data.template === "classic"
+                          ? "border-primary bg-primary/10"
+                          : "border-border bg-secondary/30 hover:border-primary/50"
+                      )}
+                    >
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-8 h-8 rounded bg-muted" />
+                        <div className="w-px h-8 bg-border" />
+                        <div className="flex-1 space-y-1">
+                          <div className="h-2 w-16 bg-muted rounded" />
+                          <div className="h-1.5 w-20 bg-muted/60 rounded" />
+                        </div>
+                      </div>
+                      <p className="text-xs font-medium">Classic</p>
+                      <p className="text-xs text-muted-foreground">Horizontal with separator</p>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => updateField("template", "stacked" as TemplateLayout)}
+                      className={cn(
+                        "relative p-4 rounded-xl border-2 transition-all text-left",
+                        data.template === "stacked"
+                          ? "border-primary bg-primary/10"
+                          : "border-border bg-secondary/30 hover:border-primary/50"
+                      )}
+                    >
+                      <div className="flex items-start gap-3 mb-2">
+                        <div className="w-8 h-8 rounded bg-muted" />
+                        <div className="w-px h-8 bg-border" />
+                        <div className="flex-1 space-y-1">
+                          <div className="h-2 w-14 bg-muted rounded" />
+                          <div className="flex items-center gap-1">
+                            <div className="w-2 h-2 rounded-full bg-muted/60" />
+                            <div className="h-1.5 w-12 bg-muted/60 rounded" />
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <div className="w-2 h-2 rounded-full bg-muted/60" />
+                            <div className="h-1.5 w-10 bg-muted/60 rounded" />
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-xs font-medium">Stacked</p>
+                      <p className="text-xs text-muted-foreground">Icons with contact info</p>
+                    </button>
+                  </div>
+                </div>
+
                 {/* Colors */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
