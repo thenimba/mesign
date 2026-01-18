@@ -82,21 +82,21 @@ export const SignatureTemplate = ({ data }: SignatureTemplateProps) => {
               </td>
             )}
 
-            {/* Separator */}
+            {/* Separator - elegant thin line */}
             {data.logoUrl && (
               <td
                 style={{
-                  width: "2px",
-                  backgroundColor: colors.primary,
                   paddingRight: isRTL ? "0" : "16px",
                   paddingLeft: isRTL ? "16px" : "0",
+                  verticalAlign: "middle",
                 }}
               >
                 <div
                   style={{
-                    width: "2px",
-                    height: "80px",
+                    width: "1px",
+                    height: "70px",
                     backgroundColor: colors.primary,
+                    opacity: 0.6,
                   }}
                 />
               </td>
