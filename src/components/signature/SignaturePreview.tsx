@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SignatureData } from "@/types/signature";
 import { SignatureTemplate } from "./SignatureTemplate";
@@ -10,10 +10,35 @@ interface SignaturePreviewProps {
   data: SignatureData;
 }
 
+// Helper function to check if a color is light
+const isLightColor = (hexColor: string): boolean => {
+  const hex = hexColor.replace('#', '');
+  const r = parseInt(hex.substr(0, 2), 16);
+  const g = parseInt(hex.substr(2, 2), 16);
+  const b = parseInt(hex.substr(4, 2), 16);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.5;
+};
+
 export const SignaturePreview = ({ data }: SignaturePreviewProps) => {
   const [isDarkPreview, setIsDarkPreview] = useState(true);
   const [copied, setCopied] = useState<"html" | "rich" | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
+
+  // Adjust text colors for better visibility based on preview mode
+  const previewData: SignatureData = {
+    ...data,
+    colors: {
+      ...data.colors,
+      // When in dark mode, use lighter text; in light mode, use darker text
+      text: isDarkPreview 
+        ? (isLightColor(data.colors.text) ? data.colors.text : '#e2e8f0') 
+        : (isLightColor(data.colors.text) ? '#1e293b' : data.colors.text),
+      secondary: isDarkPreview 
+        ? (isLightColor(data.colors.secondary) ? data.colors.secondary : '#94a3b8') 
+        : (isLightColor(data.colors.secondary) ? '#64748b' : data.colors.secondary),
+    }
+  };
 
   const getSignatureHTML = () => {
     if (!previewRef.current) return "";
@@ -101,12 +126,14 @@ export const SignaturePreview = ({ data }: SignaturePreviewProps) => {
         layout
         className={cn(
           "flex-1 rounded-xl p-8 transition-colors duration-300 overflow-auto",
-          "border border-border",
-          isDarkPreview ? "bg-zinc-900" : "bg-white"
+          "border",
+          isDarkPreview 
+            ? "bg-zinc-900 border-zinc-700" 
+            : "bg-white border-zinc-200 shadow-sm"
         )}
       >
         <div ref={previewRef}>
-          <SignatureTemplate data={data} />
+          <SignatureTemplate data={previewData} />
         </div>
       </motion.div>
 

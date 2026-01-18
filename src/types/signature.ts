@@ -48,8 +48,8 @@ export const defaultSignatureData: SignatureData = {
   },
   colors: {
     primary: '#22d3ee',
-    secondary: '#64748b',
-    text: '#1e293b',
+    secondary: '#94a3b8',
+    text: '#334155',
   },
   fontFamily: 'Inter',
   direction: 'ltr',
