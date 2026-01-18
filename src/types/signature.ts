@@ -15,6 +15,7 @@ export interface SignatureColors {
 
 export type FontFamily = 'Inter' | 'Rubik' | 'Heebo' | 'Arimo';
 export type Direction = 'ltr' | 'rtl';
+export type TemplateLayout = 'classic' | 'stacked';
 
 export interface SignatureData {
   fullName: string;
@@ -28,6 +29,7 @@ export interface SignatureData {
   colors: SignatureColors;
   fontFamily: FontFamily;
   direction: Direction;
+  template: TemplateLayout;
 }
 
 export const defaultSignatureData: SignatureData = {
@@ -53,4 +55,5 @@ export const defaultSignatureData: SignatureData = {
   },
   fontFamily: 'Inter',
   direction: 'ltr',
+  template: 'classic',
 };
