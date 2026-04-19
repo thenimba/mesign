@@ -38,11 +38,11 @@ const Index = () => {
     <div className="flex items-center gap-2">
       <Button variant="outline" size="sm" onClick={() => void load()}>
         <FolderDown className="w-4 h-4 mr-2" />
-        טעינה
+        Load
       </Button>
       <Button size="sm" onClick={() => void save()}>
         <Save className="w-4 h-4 mr-2" />
-        שמירה זמנית
+        Save Draft
       </Button>
     </div>
   );
@@ -57,10 +57,10 @@ const Index = () => {
         <div className="max-w-7xl mx-auto flex items-start gap-2 rounded-lg border border-primary/30 bg-primary/5 px-3 py-2 text-xs text-muted-foreground">
           <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
           <p>
-            <span className="text-foreground font-medium">שים לב:</span> השמירה הזמנית מבוססת על
-            <span className="text-foreground"> אימייל + טלפון</span> כמפתח. המידע יימחק אוטומטית
-            לאחר <span className="text-foreground">5 דקות של חוסר פעילות</span>, ולא יישמר ברענון
-            הדף ללא לחיצה על "שמירה זמנית".
+            <span className="text-foreground font-medium">Note:</span> Drafts are keyed by
+            <span className="text-foreground"> email + phone</span> and auto-saved as you type.
+            Your work is restored on refresh, but data is automatically deleted after
+            <span className="text-foreground"> 5 minutes of inactivity</span>.
           </p>
         </div>
       </div>
