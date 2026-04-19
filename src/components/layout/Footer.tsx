@@ -10,7 +10,7 @@ export const Footer = () => {
         <p className="flex items-center gap-1.5 text-center">
           <Info className="w-3.5 h-3.5 text-primary shrink-0" />
           <span>
-            המידע נשמר זמנית בלבד — יימחק לאחר רענון הדף או 5 דקות של חוסר פעילות.
+            Drafts are stored temporarily — deleted after 5 minutes of inactivity.
           </span>
         </p>
       </div>
