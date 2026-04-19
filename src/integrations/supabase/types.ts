@@ -14,13 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      signature_drafts: {
+        Row: {
+          created_at: string
+          data: Json
+          email: string
+          id: string
+          last_accessed_at: string
+          phone: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data: Json
+          email: string
+          id?: string
+          last_accessed_at?: string
+          phone: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          email?: string
+          id?: string
+          last_accessed_at?: string
+          phone?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      cleanup_expired_signature_drafts: { Args: never; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
