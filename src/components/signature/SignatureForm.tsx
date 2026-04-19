@@ -193,6 +193,12 @@ export const SignatureForm = ({ data, onChange }: SignatureFormProps) => {
                   onChange={(e) => updateSocial("github", e.target.value)}
                 />
                 <FloatingInput
+                  label="Threads URL"
+                  icon={<AtSign className="w-4 h-4" />}
+                  value={data.socials.threads || ""}
+                  onChange={(e) => updateSocial("threads", e.target.value)}
+                />
+                <FloatingInput
                   label="Website URL"
                   icon={<Globe className="w-4 h-4" />}
                   value={data.socials.website || ""}
