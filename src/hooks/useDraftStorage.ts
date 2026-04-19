@@ -34,12 +34,14 @@ export function useDraftStorage(
     const { error } = await supabase
       .from("signature_drafts")
       .upsert(
-        {
-          email,
-          phone,
-          data: data as unknown as Record<string, unknown>,
-          last_accessed_at: new Date().toISOString(),
-        },
+        [
+          {
+            email,
+            phone,
+            data: data as never,
+            last_accessed_at: new Date().toISOString(),
+          },
+        ],
         { onConflict: "email,phone" }
       );
     if (error) {
