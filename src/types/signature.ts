@@ -4,6 +4,7 @@ export interface SocialLinks {
   instagram?: string;
   facebook?: string;
   github?: string;
+  threads?: string;
   website?: string;
 }
 
@@ -46,6 +47,7 @@ export const defaultSignatureData: SignatureData = {
     instagram: '',
     facebook: '',
     github: '',
+    threads: '',
     website: 'https://acme.com',
   },
   colors: {
