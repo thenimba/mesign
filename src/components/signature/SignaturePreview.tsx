@@ -1,9 +1,10 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SignatureData } from "@/types/signature";
 import { SignatureTemplate } from "./SignatureTemplate";
 import { ShinyButton } from "@/components/ui/shiny-button";
-import { Copy, Check, Sun, Moon, Code, FileText } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { Check, Sun, Moon, Code, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SignaturePreviewProps {
@@ -20,10 +21,31 @@ const isLightColor = (hexColor: string): boolean => {
   return luminance > 0.5;
 };
 
+// Strip React/runtime artifacts from the rendered HTML so it becomes
+// portable, email-client-safe markup.
+const sanitizeSignatureHtml = (root: HTMLElement): string => {
+  const clone = root.cloneNode(true) as HTMLElement;
+
+  // Remove <link> tags injected for fonts — email clients ignore them.
+  clone.querySelectorAll("link").forEach((el) => el.remove());
+
+  // Remove data-* attributes added by React/devtools.
+  clone.querySelectorAll("*").forEach((el) => {
+    Array.from(el.attributes).forEach((attr) => {
+      if (attr.name.startsWith("data-")) {
+        el.removeAttribute(attr.name);
+      }
+    });
+  });
+
+  return clone.innerHTML;
+};
+
 export const SignaturePreview = ({ data }: SignaturePreviewProps) => {
   const [isDarkPreview, setIsDarkPreview] = useState(true);
   const [copied, setCopied] = useState<"html" | "rich" | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   // Adjust text colors for better visibility based on preview mode
   const previewData: SignatureData = {
@@ -40,37 +62,71 @@ export const SignaturePreview = ({ data }: SignaturePreviewProps) => {
     }
   };
 
-  const getSignatureHTML = () => {
+  const getSignatureHTML = (): string => {
     if (!previewRef.current) return "";
-    return previewRef.current.innerHTML;
+    return sanitizeSignatureHtml(previewRef.current);
   };
 
+  // Copy as rich formatted content — pastes as a real signature in
+  // Gmail, Apple Mail, Outlook. Provides both text/html and plain-text.
   const copyRichText = async () => {
     try {
       const html = getSignatureHTML();
-      const blob = new Blob([html], { type: "text/html" });
-      await navigator.clipboard.write([
-        new ClipboardItem({
-          "text/html": blob,
-          "text/plain": new Blob([html], { type: "text/plain" }),
-        }),
-      ]);
+      if (!html) return;
+      const plainText = previewRef.current?.innerText ?? "";
+
+      if (typeof ClipboardItem !== "undefined" && navigator.clipboard?.write) {
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "text/html": new Blob([html], { type: "text/html" }),
+            "text/plain": new Blob([plainText], { type: "text/plain" }),
+          }),
+        ]);
+      } else {
+        // Fallback: select the live preview and execCommand('copy')
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(previewRef.current!);
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+        document.execCommand("copy");
+        selection?.removeAllRanges();
+      }
+
       setCopied("rich");
+      toast({
+        title: "Signature copied",
+        description: "Paste it into Gmail, Apple Mail or Outlook.",
+      });
       setTimeout(() => setCopied(null), 2000);
     } catch (err) {
-      // Fallback for browsers that don't support ClipboardItem
-      const html = getSignatureHTML();
-      await navigator.clipboard.writeText(html);
-      setCopied("html");
-      setTimeout(() => setCopied(null), 2000);
+      toast({
+        title: "Copy failed",
+        description: "Your browser blocked clipboard access.",
+        variant: "destructive",
+      });
     }
   };
 
+  // Copy raw HTML — for embedding in HTML editors / signature managers.
   const copyRawHTML = async () => {
-    const html = getSignatureHTML();
-    await navigator.clipboard.writeText(html);
-    setCopied("html");
-    setTimeout(() => setCopied(null), 2000);
+    try {
+      const html = getSignatureHTML();
+      if (!html) return;
+      await navigator.clipboard.writeText(html);
+      setCopied("html");
+      toast({
+        title: "HTML copied",
+        description: "Paste this code into your email client's HTML editor.",
+      });
+      setTimeout(() => setCopied(null), 2000);
+    } catch (err) {
+      toast({
+        title: "Copy failed",
+        description: "Your browser blocked clipboard access.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

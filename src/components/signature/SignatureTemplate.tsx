@@ -1,5 +1,4 @@
 import { SignatureData } from "@/types/signature";
-import { Linkedin, Twitter, Instagram, Facebook, Github, Globe, Mail, Phone, MapPin, ExternalLink } from "lucide-react";
 
 interface SignatureTemplateProps {
   data: SignatureData;
@@ -16,24 +15,34 @@ const getFontUrl = (font: string) => {
   return fonts[font] || fonts.Inter;
 };
 
-const getSocialIcon = (platform: string, color: string, size: number = 18) => {
-  const iconStyle = { width: size, height: size, color };
-  switch (platform) {
-    case "linkedin":
-      return <Linkedin style={iconStyle} />;
-    case "twitter":
-      return <Twitter style={iconStyle} />;
-    case "instagram":
-      return <Instagram style={iconStyle} />;
-    case "facebook":
-      return <Facebook style={iconStyle} />;
-    case "github":
-      return <Github style={iconStyle} />;
-    case "website":
-      return <Globe style={iconStyle} />;
-    default:
-      return null;
-  }
+// Use img.icons8.com which serves PNG icons that render reliably
+// in Gmail, Apple Mail, Outlook, etc. Supports color hex via URL.
+const getSocialIconUrl = (platform: string, hexColor: string, size: number = 24) => {
+  const cleanHex = hexColor.replace("#", "");
+  const map: Record<string, string> = {
+    linkedin: "linkedin",
+    twitter: "twitterx",
+    instagram: "instagram-new",
+    facebook: "facebook-new",
+    github: "github",
+    threads: "threads",
+    website: "domain",
+  };
+  const slug = map[platform];
+  if (!slug) return "";
+  return `https://img.icons8.com/sf-regular-filled/${size * 2}/${cleanHex}/${slug}.png`;
+};
+
+// Inline contact icon (mail/phone/pin) as PNG from icons8 for stacked template
+const getContactIconUrl = (kind: "mail" | "phone" | "pin" | "link", hexColor: string, size: number = 14) => {
+  const cleanHex = hexColor.replace("#", "");
+  const slugMap: Record<string, string> = {
+    mail: "new-post",
+    phone: "phone",
+    pin: "marker",
+    link: "domain",
+  };
+  return `https://img.icons8.com/sf-regular-filled/${size * 2}/${cleanHex}/${slugMap[kind]}.png`;
 };
 
 // Classic template (horizontal with separator)
@@ -214,12 +223,18 @@ const ClassicTemplate = ({ data }: SignatureTemplateProps) => {
                                   href={url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  style={{ 
+                                  style={{
                                     textDecoration: "none",
                                     display: "inline-block",
                                   }}
                                 >
-                                  {getSocialIcon(platform, colors.primary, 18)}
+                                  <img
+                                    src={getSocialIconUrl(platform, colors.primary, 18)}
+                                    alt={platform}
+                                    width="18"
+                                    height="18"
+                                    style={{ display: "block", border: 0 }}
+                                  />
                                 </a>
                               </td>
                             ))}
@@ -245,13 +260,6 @@ const StackedTemplate = ({ data }: SignatureTemplateProps) => {
   const textAlign = isRTL ? "right" : "left";
 
   const activeSocials = Object.entries(socials).filter(([_, url]) => url && url.trim() !== "");
-  
-  const iconStyle = { 
-    width: 14, 
-    height: 14, 
-    color: colors.secondary,
-    opacity: 0.7,
-  };
 
   return (
     <table
@@ -333,10 +341,10 @@ const StackedTemplate = ({ data }: SignatureTemplateProps) => {
                 {/* Job Title & Company */}
                 <tr>
                   <td style={{ paddingBottom: "12px" }}>
-                    <span 
-                      style={{ 
-                        fontSize: "12px", 
-                        color: colors.secondary, 
+                    <span
+                      style={{
+                        fontSize: "12px",
+                        color: colors.secondary,
                         textTransform: "uppercase",
                         letterSpacing: "0.05em",
                         fontWeight: 500,
@@ -363,7 +371,13 @@ const StackedTemplate = ({ data }: SignatureTemplateProps) => {
                         <tbody>
                           <tr>
                             <td style={{ paddingRight: isRTL ? "0" : "8px", paddingLeft: isRTL ? "8px" : "0", verticalAlign: "middle" }}>
-                              <Mail style={iconStyle} />
+                              <img
+                                src={getContactIconUrl("mail", colors.secondary, 14)}
+                                alt="email"
+                                width="14"
+                                height="14"
+                                style={{ display: "block", border: 0, opacity: 0.8 }}
+                              />
                             </td>
                             <td>
                               <a
@@ -392,7 +406,13 @@ const StackedTemplate = ({ data }: SignatureTemplateProps) => {
                         <tbody>
                           <tr>
                             <td style={{ paddingRight: isRTL ? "0" : "8px", paddingLeft: isRTL ? "8px" : "0", verticalAlign: "middle" }}>
-                              <Phone style={iconStyle} />
+                              <img
+                                src={getContactIconUrl("phone", colors.secondary, 14)}
+                                alt="phone"
+                                width="14"
+                                height="14"
+                                style={{ display: "block", border: 0, opacity: 0.8 }}
+                              />
                             </td>
                             <td>
                               <a
@@ -421,7 +441,13 @@ const StackedTemplate = ({ data }: SignatureTemplateProps) => {
                         <tbody>
                           <tr>
                             <td style={{ paddingRight: isRTL ? "0" : "8px", paddingLeft: isRTL ? "8px" : "0", verticalAlign: "middle" }}>
-                              <ExternalLink style={iconStyle} />
+                              <img
+                                src={getContactIconUrl("link", colors.primary, 14)}
+                                alt="website"
+                                width="14"
+                                height="14"
+                                style={{ display: "block", border: 0, opacity: 0.85 }}
+                              />
                             </td>
                             <td>
                               <a
@@ -452,7 +478,13 @@ const StackedTemplate = ({ data }: SignatureTemplateProps) => {
                         <tbody>
                           <tr>
                             <td style={{ paddingRight: isRTL ? "0" : "8px", paddingLeft: isRTL ? "8px" : "0", verticalAlign: "middle" }}>
-                              <MapPin style={iconStyle} />
+                              <img
+                                src={getContactIconUrl("pin", colors.secondary, 14)}
+                                alt="location"
+                                width="14"
+                                height="14"
+                                style={{ display: "block", border: 0, opacity: 0.8 }}
+                              />
                             </td>
                             <td>
                               <span style={{ fontSize: "13px", color: colors.secondary }}>
@@ -487,12 +519,18 @@ const StackedTemplate = ({ data }: SignatureTemplateProps) => {
                                     href={url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    style={{ 
+                                    style={{
                                       textDecoration: "none",
                                       display: "inline-block",
                                     }}
                                   >
-                                    {getSocialIcon(platform, colors.primary, 20)}
+                                    <img
+                                      src={getSocialIconUrl(platform, colors.primary, 20)}
+                                      alt={platform}
+                                      width="20"
+                                      height="20"
+                                      style={{ display: "block", border: 0 }}
+                                    />
                                   </a>
                                 </td>
                               ))}

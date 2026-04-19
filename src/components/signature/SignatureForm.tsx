@@ -27,6 +27,7 @@ import {
   Facebook,
   Github,
   Globe,
+  AtSign,
   Palette,
   Type,
   AlignLeft,
@@ -190,6 +191,12 @@ export const SignatureForm = ({ data, onChange }: SignatureFormProps) => {
                   icon={<Github className="w-4 h-4" />}
                   value={data.socials.github || ""}
                   onChange={(e) => updateSocial("github", e.target.value)}
+                />
+                <FloatingInput
+                  label="Threads URL"
+                  icon={<AtSign className="w-4 h-4" />}
+                  value={data.socials.threads || ""}
+                  onChange={(e) => updateSocial("threads", e.target.value)}
                 />
                 <FloatingInput
                   label="Website URL"
