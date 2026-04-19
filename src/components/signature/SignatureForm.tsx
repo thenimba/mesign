@@ -27,6 +27,7 @@ import {
   Facebook,
   Github,
   Globe,
+  AtSign,
   Palette,
   Type,
   AlignLeft,
